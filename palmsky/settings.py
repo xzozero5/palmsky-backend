@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = '/media/'
@@ -26,7 +27,7 @@ SECRET_KEY = '54!fyp_tjtnf6uu^#+p&4-d)k9lt=-3joks8q^8awi^l_l67yg'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://shielded-caverns-34585.herokuapp.com/']
 
 
 # Application definition
@@ -90,13 +91,14 @@ WSGI_APPLICATION = 'palmsky.wsgi.application'
 DATABASES = {
     'default': {
        'ENGINE': 'django.db.backends.postgresql',
-       'NAME':  'lgsgxqoz',
-       'USER' : 'lgsgxqoz',
-       'PASSWORD' : 'Hd68S33rxw5WMCtj4NMpPNW0zdMThjy_',
-       'HOST' : 'rajje.db.elephantsql.com',
-       'PORT' : '5432'
+       'NAME':  'djangodb',
+       'USER' : 'root',
+       'PASSWORD' : '',
+       'HOST' : 'localhost',
+       'PORT' : ''
     }
 }
+DATABASES['default'] = dj_database_url.config(default='postgres://fqgjriahfroeli:415716e6f473d57ff0774a8b6d48d340fe52e0e7977def9d3492d93ad4b52963@ec2-3-216-92-193.compute-1.amazonaws.com:5432/dep5719i9s5nai')
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
