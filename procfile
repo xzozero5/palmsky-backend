@@ -1,0 +1,1 @@
+web: gunicorn palmsky.wsgi --log-file - 
