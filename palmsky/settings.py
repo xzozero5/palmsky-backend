@@ -29,8 +29,23 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_METHODS = ['*']
-CORS_ALLOW_HEADERS = ['*']
+CORS_ALLOW_METHODS = (
+        'GET',
+        'POST',
+        'PUT',
+        'PATCH',
+        'DELETE',
+        'OPTIONS'
+)
+CORS_ALLOW_HEADERS = (
+        'x-requested-with',
+        'content-type',
+        'accept',
+        'origin',
+        'authorization',
+        'x-csrftoken'
+)
+CORS_ALLOWED_ORIGIN = ['*']
 CORS_REPLACE_HTTPS_REFERER = True
 # Application definition
 
