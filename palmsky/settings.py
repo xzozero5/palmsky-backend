@@ -28,8 +28,9 @@ SECRET_KEY = '54!fyp_tjtnf6uu^#+p&4-d)k9lt=-3joks8q^8awi^l_l67yg'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
-
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_METHODS = ['*']
+CORS_ALLOW_HEADERS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'backend'
+    'backend',
+    'corsheaders',
 ]
 
 REST_FRAMEWORK = {
@@ -61,6 +63,8 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
