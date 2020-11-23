@@ -24,6 +24,7 @@ class BookSerializer(serializers.ModelSerializer):
             'pages',
             'width',
             'height',
+            'rank_score',
             'pdf_file',
             'cover_Image',
             'tags'
@@ -73,6 +74,7 @@ class BookSerializerWithoutFile(serializers.ModelSerializer):
             'pages',
             'width',
             'height',
+            'rank_score',
             'tags'
         ]
         read_only_fields = ['pk']
