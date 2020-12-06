@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework.reverse import reverse as api_reverse
 from django.core.validators import FileExtensionValidator
+from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
+from django.contrib.auth.models import BaseUserManager
 # Create your models here.
 class Tag(models.Model):
     word        = models.CharField(max_length=35)
@@ -46,4 +49,91 @@ class Book(models.Model):
     @property
     def owner(self):
         return self.author
+    """
+
+class UserAccountManager(BaseUserManager):
+
+    def create_user(self,email,firstName,LastName,picture,addressName,street,subDistrict,district,province,zipcode,password=None):
+
+        if not email :
+            raise ValueError("User must have an email address.")
+
+        email = self.normalize_email(email)
+        user = self.model(
+            email = email,
+            firstName = firstName,
+            LastName = LastName,
+            picture = picture,
+            addressName =  addressName,
+            street =   street,
+            subDistrict =   subDistrict,
+            district = district,
+            province =  province,
+            zipcode  = zipcode,
+            )
+        
+        user.set_password(password)
+        user.save(using=self._db)
+
+        return user
+
+    def create_superuser(self,email,password):
+        user = self.create_user(email,password)
+
+        user.is_superuser = True
+        user.is_admin = True
+
+        user.save(using=self._db)
+
+        return user
+
+
+
+class UserAccount(AbstractBaseUser,PermissionsMixin) :
+
+    username = None
+    email = models.EmailField(unique=True)
+    created = models.DateTimeField('created', auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField('active', default=True)
+    is_admin = models.BooleanField('admin', default=False)
+
+    firstName = models.CharField(max_length=100,null=True,blank=True)
+    lastName = models.CharField(max_length=100,null=True,blank=True)
+    picture = models.ImageField(upload_to='user_image',editable = True,validators=[
+        FileExtensionValidator(allowed_extensions=['jpg','png'])
+    ],null=True,blank=True)
+    addressName = models.TextField(null=True,blank=True)
+    street = models.CharField(max_length=100,null=True,blank=True)
+    subDistrict = models.CharField(max_length=100,null=True,blank=True)
+    district = models.CharField(max_length=100,null=True,blank=True)
+    province = models.CharField(max_length=100,null=True,blank=True)
+    zipcode = models.CharField(max_length=50,null=True,blank=True)
+
+    objects = UserAccountManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    def get_full_name(self):
+        return self.firstName + " " + self.lastName
+
+    def __str__(self):
+        return self.email
+
+    """
+    firstName = models.CharField(max_length=100,null=True,blank=True)
+    LastName = models.CharField(max_length=100,null=True,blank=True)
+    picture = models.ImageField(upload_to='user_image',editable = True,validators=[
+        FileExtensionValidator(allowed_extensions=['jpg','png'])
+    ],null=True,blank=True)
+    addressName = models.TextField(null=True,blank=True)
+    street = models.CharField(max_length=100,null=True,blank=True)
+    subDistrict = models.CharField(max_length=100,null=True,blank=True)
+    district = models.CharField(max_length=100,null=True,blank=True)
+    province = models.CharField(max_length=100,null=True,blank=True)
+    zipcode = models.CharField(max_length=50,null=True,blank=True)
+
+
+    firstName,LastName,picture,addressName,street,subDistrict,district,province,zipcode
     """
