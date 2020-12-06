@@ -89,7 +89,7 @@ class UserAccountManager(BaseUserManager):
 
 
 
-class UserAccount(AbstractBaseUser,PermissionsMixin) :
+class UserAccount(AbstractBaseUser) :
 
     username = None
     email = models.EmailField(unique=True)
