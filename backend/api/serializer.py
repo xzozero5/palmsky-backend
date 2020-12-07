@@ -1,7 +1,5 @@
 from rest_framework import serializers
 from backend.models import *
-# convert to JSON
-# Validation
 
 class BookSerializer(serializers.ModelSerializer):
     tags = serializers.SlugRelatedField(read_only=True, slug_field='word', many=True) 
@@ -138,3 +136,4 @@ class UserAccountSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user 
+

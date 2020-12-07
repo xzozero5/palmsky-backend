@@ -8,8 +8,20 @@ from rest_framework import viewsets,filters
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.authtoken.serializers import AuthTokenSerializer 
+from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.settings import api_settings
+from rest_framework.views import APIView
+from rest_framework.renderers import JSONRenderer
+from django.conf import settings
+from rest_framework.permissions import IsAuthenticated
+
+class Token(models.Model):
+    ...
+
+    class Meta:
+        abstract = 'rest_framework.authtoken' not in settings.INSTALLED_APPS
+        
 class BookListAPIView(mixins.CreateModelMixin,generics.ListAPIView):
     lookup_field = 'pk' #id #url(?P<pk>\d+)
     serializer_class = BookSerializer
@@ -96,9 +108,7 @@ class UserAccountViewSet(viewsets.ModelViewSet):
             form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             doc = form.save() 
-
-class LoginViewSet(viewsets.ViewSet):
-    serializer_class = AuthTokenSerializer
-
-    def create(self,request):
-        return ObtainAuthToken().post(request)
+            
+class UserLoginApiView(ObtainAuthToken):
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+      
