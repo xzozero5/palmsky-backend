@@ -92,7 +92,6 @@ class BookSerializerWithoutFile(serializers.ModelSerializer):
 
 class UserAccountSerializer(serializers.ModelSerializer):
     picture = serializers.ImageField(max_length=None, use_url=True, required=False)
-    gender = serializers.ChoiceField(choices=UserAccount.GENDER_CHOICES)
     class Meta:
         model = UserAccount
         fields = [

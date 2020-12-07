@@ -123,12 +123,9 @@ class UserAccount(AbstractBaseUser,PermissionsMixin) :
 
     dateOfBirth = models.DateField(default=timezone.now,null=True,blank=True)
 
-    GENDER_CHOICES = (
-        ('Male', 'Male'),
-        ('Female', 'Female'),
-    )
 
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES,null=True,blank=True)
+ 
+    gender = models.CharField(max_length=10,null=True,blank=True)
 
     addressName = models.TextField(null=True,blank=True)
     street = models.CharField(max_length=100,null=True,blank=True)
