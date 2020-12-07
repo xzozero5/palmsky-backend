@@ -1,9 +1,13 @@
 
 from rest_framework import generics ,mixins
-from backend.models import Book
+from backend.models import *
 from .serializer import *
 from django.db.models import Q
-from .permissions import IsOwnerOrReadOnly
+from .permissions import IsOwnerOrReadOnly,UpdateOwnProfile
+from rest_framework import viewsets,filters
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.authentication import TokenAuthentication
 class BookListAPIView(mixins.CreateModelMixin,generics.ListAPIView):
     lookup_field = 'pk' #id #url(?P<pk>\d+)
     serializer_class = BookSerializer
@@ -77,4 +81,10 @@ class BookTagListAPIView(generics.ListAPIView):
             qs = qs.filter(tags__in = s_tag).distinct()
        return qs
     
-   
+class UserAccountViewSet(viewsets.ModelViewSet):
+    serializer_class = UserAccountSerializer
+    queryset = UserAccount.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (UpdateOwnProfile,)
+    filter_backends = (filters.SearchFilter,)
+    search_fields =  ('firstName','lastName','email',)

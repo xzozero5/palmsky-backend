@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from backend.models import *
 # convert to JSON
-
 # Validation
 
 class BookSerializer(serializers.ModelSerializer):
@@ -91,3 +90,43 @@ class BookSerializerWithoutFile(serializers.ModelSerializer):
         if qs.exists() :
             raise serializers.ValidationError("This title has been used")
         return value
+
+
+class UserAccountSerializer(serializers.ModelSerializer):
+    picture = serializers.ImageField(max_length=None, use_url=True, required=False)
+    class Meta:
+        model = UserAccount
+        fields = [
+            'id',
+            'email',
+            'password',
+            'firstName',
+            'lastName',
+            'picture',
+            'phone',
+            'addressName',
+            'street',
+            'subDistrict',
+            'district',
+            'province',
+            'zipcode'
+        ]
+        extra_kwargs = {'password' : {'write_only' : True}}
+
+    def create(self,validated_data):
+        user = UserAccount(
+            email = validated_data['email'],
+            firstName = validated_data['firstName'],
+            lastName = validated_data['lastName'],
+            picture = validated_data['picture'],
+            phone = validated_data['phone'],
+            addressName = validated_data['addressName'],
+            street= validated_data['street'],
+            subDistrict = validated_data['subDistrict'],
+            district = validated_data['district'],
+            province = validated_data['province'],
+            zipcode = validated_data['zipcode']
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user 

@@ -53,7 +53,7 @@ class Book(models.Model):
 
 class UserAccountManager(BaseUserManager):
 
-    def create_user(self,email,firstName,LastName,picture,addressName,street,subDistrict,district,province,zipcode,password=None):
+    def create_user(self,email,firstName,LastName,picture,phone,addressName,street,subDistrict,district,province,zipcode,password=None):
 
         if not email :
             raise ValueError("User must have an email address.")
@@ -64,6 +64,7 @@ class UserAccountManager(BaseUserManager):
             firstName = firstName,
             LastName = LastName,
             picture = picture,
+            phone =  phone,
             addressName =  addressName,
             street =   street,
             subDistrict =   subDistrict,
@@ -103,6 +104,7 @@ class UserAccount(AbstractBaseUser) :
     picture = models.ImageField(upload_to='user_image',editable = True,validators=[
         FileExtensionValidator(allowed_extensions=['jpg','png'])
     ],null=True,blank=True)
+    phone =  models.CharField(max_length=15,null=True,blank=True)
     addressName = models.TextField(null=True,blank=True)
     street = models.CharField(max_length=100,null=True,blank=True)
     subDistrict = models.CharField(max_length=100,null=True,blank=True)
