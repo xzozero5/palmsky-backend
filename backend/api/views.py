@@ -8,6 +8,8 @@ from rest_framework import viewsets,filters
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.authtoken.serializers import AuthTokenSerializer 
+from rest_framework.authtoken.views import ObtainAuthToken
 class BookListAPIView(mixins.CreateModelMixin,generics.ListAPIView):
     lookup_field = 'pk' #id #url(?P<pk>\d+)
     serializer_class = BookSerializer
@@ -88,8 +90,15 @@ class UserAccountViewSet(viewsets.ModelViewSet):
     permission_classes = (UpdateOwnProfile,)
     filter_backends = (filters.SearchFilter,)
     search_fields =  ('firstName','lastName','email',)
+
     def upload(request):
         if request.method == 'POST':
             form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             doc = form.save() 
+
+class LoginViewSet(viewsets.ViewSet):
+    serializer_class = AuthTokenSerializer
+
+    def create(self,request):
+        return ObtainAuthToken().post(request)

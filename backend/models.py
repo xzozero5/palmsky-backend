@@ -53,7 +53,7 @@ class Book(models.Model):
 
 class UserAccountManager(BaseUserManager):
 
-    def create_user(self,email,firstName,LastName,picture,phone,addressName,street,subDistrict,district,province,zipcode,password=None):
+    def create_user(self,email,mailingAllow,firstName,LastName,picture,phone,dateOfBirth,gender,addressName,street,subDistrict,district,province,zipcode,password=None):
 
         if not email :
             raise ValueError("User must have an email address.")
@@ -61,10 +61,13 @@ class UserAccountManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(
             email = email,
+            mailingAllow = mailingAllow,
             firstName = firstName,
             LastName = LastName,
             picture = picture,
             phone =  phone,
+            dateOfBirth =  dateOfBirth,
+            gender = gender,
             addressName =  addressName,
             street =   street,
             subDistrict =   subDistrict,
@@ -94,6 +97,9 @@ class UserAccount(AbstractBaseUser) :
 
     username = None
     email = models.EmailField(unique=True)
+
+    mailingAllow = models.BooleanField('mailingAllow', default=False)
+
     created = models.DateTimeField('created', auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField('active', default=True)
@@ -105,6 +111,16 @@ class UserAccount(AbstractBaseUser) :
         FileExtensionValidator(allowed_extensions=['jpg','png'])
     ],null=True,blank=True)
     phone =  models.CharField(max_length=15,null=True,blank=True)
+
+    dateOfBirth = models.DateField(default=timezone.now,null=True,blank=True)
+
+    GENDER_CHOICES = (
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+    )
+
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
+
     addressName = models.TextField(null=True,blank=True)
     street = models.CharField(max_length=100,null=True,blank=True)
     subDistrict = models.CharField(max_length=100,null=True,blank=True)

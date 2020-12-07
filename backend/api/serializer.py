@@ -94,16 +94,20 @@ class BookSerializerWithoutFile(serializers.ModelSerializer):
 
 class UserAccountSerializer(serializers.ModelSerializer):
     picture = serializers.ImageField(max_length=None, use_url=True, required=False)
+    gender = serializers.ChoiceField(choices=UserAccount.GENDER_CHOICES)
     class Meta:
         model = UserAccount
         fields = [
             'id',
             'email',
+            'mailingAllow',
             'password',
             'firstName',
             'lastName',
             'picture',
             'phone',
+            'dateOfBirth',
+            'gender',
             'addressName',
             'street',
             'subDistrict',
@@ -116,10 +120,12 @@ class UserAccountSerializer(serializers.ModelSerializer):
     def create(self,validated_data):
         user = UserAccount(
             email = validated_data['email'],
+            mailingAllow = validated_data['mailingAllow'],
             firstName = validated_data['firstName'],
             lastName = validated_data['lastName'],
-         #   picture = validated_data['picture'],
             phone = validated_data['phone'],
+            dateOfBirth = validated_data['dateOfBirth'],
+            gender = validated_data['gender'],
             addressName = validated_data['addressName'],
             street= validated_data['street'],
             subDistrict = validated_data['subDistrict'],
