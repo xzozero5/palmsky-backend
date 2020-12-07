@@ -139,7 +139,7 @@ class UserAccountViewSet(viewsets.ModelViewSet):
 class UserAccountRudView(generics.RetrieveUpdateAPIView):
     lookup_field = 'pk' #id #url(?P<pk>\d+)
     serializer_class = UserAccountSerializer
-    permission_classes = (UpdateOwnProfile,)
+    permission_classes = [UpdateOwnProfile,IsOwnerOrReadOnly]
     def get_queryset(self) :
         return UserAccount.objects.all()
     def get_serializer_context(self, *args, **kwargs):
