@@ -118,7 +118,7 @@ class UserAccountSerializer(serializers.ModelSerializer):
             email = validated_data['email'],
             firstName = validated_data['firstName'],
             lastName = validated_data['lastName'],
-            picture = validated_data['picture'],
+         #   picture = validated_data['picture'],
             phone = validated_data['phone'],
             addressName = validated_data['addressName'],
             street= validated_data['street'],
@@ -127,6 +127,8 @@ class UserAccountSerializer(serializers.ModelSerializer):
             province = validated_data['province'],
             zipcode = validated_data['zipcode']
         )
+        if 'picture' in validated_data:
+            user.picture = validated_data.pop('picture')
         user.set_password(validated_data['password'])
         user.save()
         return user 

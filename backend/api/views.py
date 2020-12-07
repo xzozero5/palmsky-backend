@@ -88,3 +88,8 @@ class UserAccountViewSet(viewsets.ModelViewSet):
     permission_classes = (UpdateOwnProfile,)
     filter_backends = (filters.SearchFilter,)
     search_fields =  ('firstName','lastName','email',)
+    def upload(request):
+        if request.method == 'POST':
+            form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            doc = form.save() 
