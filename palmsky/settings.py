@@ -127,7 +127,7 @@ DATABASES = {
     }
 }
 DATABASES['default'] = dj_database_url.config(default='postgres://fqgjriahfroeli:415716e6f473d57ff0774a8b6d48d340fe52e0e7977def9d3492d93ad4b52963@ec2-3-216-92-193.compute-1.amazonaws.com:5432/dep5719i9s5nai')
-
+AUTH_USER_MODEL = 'backend.UserAccount'
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -165,4 +165,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-#AUTH_USER_MODEL = 'backend.UserAccount'
+

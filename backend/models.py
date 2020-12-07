@@ -93,18 +93,18 @@ class UserAccountManager(BaseUserManager):
 
 
 
-class UserAccount(AbstractBaseUser) :
+class UserAccount(AbstractBaseUser,PermissionsMixin) :
 
     username = None
     email = models.EmailField(unique=True)
-
     mailingAllow = models.BooleanField('mailingAllow', default=False)
 
     created = models.DateTimeField('created', auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+
     is_active = models.BooleanField('active', default=True)
     is_admin = models.BooleanField('admin', default=False)
-
+    
     firstName = models.CharField(max_length=100,null=True,blank=True)
     lastName = models.CharField(max_length=100,null=True,blank=True)
     picture = models.ImageField(upload_to='user_image',editable = True,validators=[
@@ -119,7 +119,7 @@ class UserAccount(AbstractBaseUser) :
         ('Female', 'Female'),
     )
 
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES,null=True,blank=True)
 
     addressName = models.TextField(null=True,blank=True)
     street = models.CharField(max_length=100,null=True,blank=True)
@@ -131,10 +131,14 @@ class UserAccount(AbstractBaseUser) :
     objects = UserAccountManager()
 
     USERNAME_FIELD = 'email'
+    EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = []
 
     def get_full_name(self):
         return self.firstName + " " + self.lastName
+    
+    def get_short_name(self):   
+        return self.email
 
     def __str__(self):
         return self.email
