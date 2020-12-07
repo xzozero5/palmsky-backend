@@ -21,7 +21,7 @@ class Token(models.Model):
 
     class Meta:
         abstract = 'rest_framework.authtoken' not in settings.INSTALLED_APPS
-        
+
 class BookListAPIView(mixins.CreateModelMixin,generics.ListAPIView):
     lookup_field = 'pk' #id #url(?P<pk>\d+)
     serializer_class = BookSerializer
@@ -44,7 +44,31 @@ class BookListAPIView(mixins.CreateModelMixin,generics.ListAPIView):
             form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             doc = form.save()
-    
+
+
+class BookListRankAPIView(mixins.CreateModelMixin,generics.ListAPIView):
+    lookup_field = 'pk' #id #url(?P<pk>\d+)
+    serializer_class = BookSerializer
+    def get_queryset(self) : #/?q = <text>
+        qs = Book.objects.all()
+        query = self.request.GET.get("q")
+        if query is not None:
+            qs = qs.filter(
+                Q(title__icontains=query)|
+                Q(author__icontains=query)|
+                Q(publisher__icontains=query)
+            ).distinct()
+        qs = qs.order_by('-rank_score')
+        return qs
+    def post(self, request, *ards, **kwargs):
+        return self.create(request, *ards, **kwargs)
+    def get_serializer_context(self, *args, **kwargs):
+        return {"request":self.request}
+    def upload(request):
+        if request.method == 'POST':
+            form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            doc = form.save()   
         """
     def perform_create(self,serializer):
         serializer.save(user=self.request.user)
@@ -83,6 +107,7 @@ class TagListAPIView(generics.ListAPIView):
        
 
 class BookTagListAPIView(generics.ListAPIView):
+
     serializer_class = BookSerializer
     def get_queryset(self):
        qs = Book.objects.all()
@@ -94,7 +119,9 @@ class BookTagListAPIView(generics.ListAPIView):
             print(s_tag)
             qs = qs.filter(tags__in = s_tag).distinct()
        return qs
-    
+
+
+
 class UserAccountViewSet(viewsets.ModelViewSet):
     serializer_class = UserAccountSerializer
     queryset = UserAccount.objects.all()
@@ -108,6 +135,20 @@ class UserAccountViewSet(viewsets.ModelViewSet):
             form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             doc = form.save() 
+
+class UserAccountRudView(generics.RetrieveUpdateAPIView):
+    lookup_field = 'pk' #id #url(?P<pk>\d+)
+    serializer_class = UserAccountSerializer
+    permission_classes = (UpdateOwnProfile,)
+    def get_queryset(self) :
+        return UserAccount.objects.all()
+    def get_serializer_context(self, *args, **kwargs):
+        return {"request":self.request}
+    def upload(request):
+        if request.method == 'POST':
+            form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            doc = form.save()      
             
 class UserLoginApiView(ObtainAuthToken):
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES

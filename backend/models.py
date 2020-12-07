@@ -122,8 +122,6 @@ class UserAccount(AbstractBaseUser,PermissionsMixin) :
     phone =  models.CharField(max_length=15,null=True,blank=True)
 
     dateOfBirth = models.DateField(default=timezone.now,null=True,blank=True)
-
-
  
     gender = models.CharField(max_length=10,null=True,blank=True)
 
@@ -145,6 +143,8 @@ class UserAccount(AbstractBaseUser,PermissionsMixin) :
     
     def get_short_name(self):   
         return self.email
+
+
     """
     def has_module_perms(self, app_label):
       
@@ -155,22 +155,10 @@ class UserAccount(AbstractBaseUser,PermissionsMixin) :
        return self.is_superuser
     """
 
+    def get_api_url(self,request = None):
+        return api_reverse("api-backend:account-rud",kwargs={'pk':self.pk},request=request)
+
     def __str__(self):
         return self.email
 
-    """
-    firstName = models.CharField(max_length=100,null=True,blank=True)
-    LastName = models.CharField(max_length=100,null=True,blank=True)
-    picture = models.ImageField(upload_to='user_image',editable = True,validators=[
-        FileExtensionValidator(allowed_extensions=['jpg','png'])
-    ],null=True,blank=True)
-    addressName = models.TextField(null=True,blank=True)
-    street = models.CharField(max_length=100,null=True,blank=True)
-    subDistrict = models.CharField(max_length=100,null=True,blank=True)
-    district = models.CharField(max_length=100,null=True,blank=True)
-    province = models.CharField(max_length=100,null=True,blank=True)
-    zipcode = models.CharField(max_length=50,null=True,blank=True)
-
-
-    firstName,LastName,picture,addressName,street,subDistrict,district,province,zipcode
-    """
+    

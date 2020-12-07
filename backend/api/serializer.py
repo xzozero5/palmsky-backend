@@ -91,10 +91,12 @@ class BookSerializerWithoutFile(serializers.ModelSerializer):
 
 
 class UserAccountSerializer(serializers.ModelSerializer):
+    url = serializers.SerializerMethodField(read_only=True)
     picture = serializers.ImageField(max_length=None, use_url=True, required=False)
     class Meta:
         model = UserAccount
         fields = [
+            'url',
             'id',
             'email',
             'mailingAllow',
@@ -113,6 +115,10 @@ class UserAccountSerializer(serializers.ModelSerializer):
             'zipcode'
         ]
         extra_kwargs = {'password' : {'write_only' : True}}
+        
+    def get_url(self,objects):
+        request = self.context.get("request")
+        return objects.get_api_url(request=request)
 
     def create(self,validated_data):
         user = UserAccount(
