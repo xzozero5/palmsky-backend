@@ -17,6 +17,8 @@ urlpatterns = [
     url(r'^account/$',UserAccountViewSet.as_view({'get': 'list','post': 'create'}),name='account-list'),
     url(r'^account/address/$',UserAccountAddressViewSet.as_view({'get': 'list','post': 'create'}),name='account-address'),
     url(r'^account/address/(?P<pk>\d+)/$',UserAccountAddressViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update','delete': 'destroy'}),name='account-address-rud'),
+    url(r'^promotion/$',PromotionListAPIView.as_view(),name='promotion-list'),
+    url(r'^promotion/(?P<pk>\d+)/$',PromotionBookListAPIView.as_view(),name='promotion-book-list'),
     path('login/',UserLoginApiView.as_view()),
 ] 
 

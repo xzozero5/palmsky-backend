@@ -167,3 +167,19 @@ class UserAccountAddress(models.Model):
 
     def get_api_url(self,request = None):
         return api_reverse("api-backend:account-address-rud",kwargs={'pk':self.pk},request=request)
+
+class Promotion(models.Model):
+    title = models.CharField(max_length=200)
+    book_list = models.ManyToManyField(Book,null=True,blank=True)
+    banner_picture = models.ImageField(upload_to='promotion_image',editable = True,validators=[
+        FileExtensionValidator(allowed_extensions=['jpg','png'])
+    ],null=True,blank=True)
+    start_date = models.DateField(default=timezone.now,null=True,blank=True)
+    end_date = models.DateField(null=True,blank=True)
+
+    def __str__(self):
+        return self.title
+
+    def get_api_url(self,request = None):
+        return api_reverse("api-backend:promotion-book-list",kwargs={'pk':self.pk},request=request)
+

@@ -177,3 +177,40 @@ class UserAccountUrlSerializer(serializers.ModelSerializer):
     def get_url(self,objects):
         request = self.context.get("request")
         return objects.get_api_url(request=request)
+
+
+class PromotionSerializer(serializers.ModelSerializer):
+   # book_list = BookSerializer(many = True,read_only= True)
+    url = serializers.SerializerMethodField(read_only=True)
+    banner_picture = serializers.ImageField(max_length=None, use_url=True, required=False)
+    class Meta:
+        model = Promotion
+        fields = [
+            'url',
+            'pk',
+            'title',
+            'banner_picture',
+            'start_date',
+            'end_date'
+        ]
+        read_only_fields = ['pk']
+
+    def get_url(self,objects):
+        request = self.context.get("request")
+        return objects.get_api_url(request=request)
+
+
+class PromotionBookSerializer(serializers.ModelSerializer):
+    book_list = BookSerializer(many = True,read_only= True)
+    banner_picture = serializers.ImageField(max_length=None, use_url=True, required=False)
+    class Meta:
+        model = Promotion
+        fields = [
+            'pk',
+            'title',
+            'banner_picture',
+            'start_date',
+            'end_date',
+            'book_list'
+        ]
+        read_only_fields = ['pk']

@@ -168,3 +168,17 @@ class UserAccountAddressViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         return UserAccountAddress.objects.filter(user_account = user)
+
+class PromotionListAPIView(generics.ListAPIView):
+    lookup_field = 'pk'
+    serializer_class = PromotionSerializer
+    def get_queryset(self) : #/?q = <text>
+       return Promotion.objects.all()
+
+
+class PromotionBookListAPIView(generics.ListAPIView):
+    lookup_field = 'pk'
+    serializer_class = PromotionBookSerializer
+    def get_queryset(self) : #/?q = <text>
+       return Promotion.objects.all()
+
