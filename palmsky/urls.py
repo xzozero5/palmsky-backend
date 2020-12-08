@@ -19,6 +19,6 @@ from django.conf.urls import url,include
 from django.conf.urls.static import static
 from palmsky import settings
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^api/', include('backend.api.urls', namespace = 'api-backend')),
+    path('admin/', admin.site.urls),
+    path('api/', include('backend.api.urls', namespace = 'api-backend')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

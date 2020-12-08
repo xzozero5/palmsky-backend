@@ -49,7 +49,8 @@ CORS_ALLOW_HEADERS = (
         'accept',
         'origin',
         'authorization',
-        'x-csrftoken'
+        'x-csrftoken',
+        'X-Access-Token'
 )
 CORS_ALLOWED_ORIGIN = ['*']
 CORS_REPLACE_HTTPS_REFERER = True
