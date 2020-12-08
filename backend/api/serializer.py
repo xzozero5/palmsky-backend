@@ -115,7 +115,7 @@ class UserAccountSerializer(serializers.ModelSerializer):
             'zipcode'
         ]
         extra_kwargs = {'password' : {'write_only' : True}}
-        
+
     def get_url(self,objects):
         request = self.context.get("request")
         return objects.get_api_url(request=request)
@@ -141,4 +141,29 @@ class UserAccountSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user 
+
+class UserAccountAddressSerializer(serializers.ModelSerializer):
+    url = serializers.SerializerMethodField(read_only=True)
+    class Meta:
+        model = UserAccountAddress
+        fields = [
+            'url',
+            'id',
+            'user_account',
+            'create_on',
+            'addressName',
+            'reciverName',
+            'street',
+            'subDistrict',
+            'district',
+            'province',
+            'zipcode'
+        ]
+        read_only_fields = ['user_account','url']
+        extra_kwargs = {'user_account' : {'read_only' : True}}
+
+    def get_url(self,objects):
+        request = self.context.get("request")
+        return objects.get_api_url(request=request)
+
 

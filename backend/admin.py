@@ -4,3 +4,4 @@ from .models import *
 admin.site.register(Book)
 admin.site.register(Tag)
 admin.site.register(UserAccount)
+admin.site.register(UserAccountAddress)

@@ -121,7 +121,6 @@ class BookTagListAPIView(generics.ListAPIView):
        return qs
 
 
-
 class UserAccountViewSet(viewsets.ModelViewSet):
     serializer_class = UserAccountSerializer
     queryset = UserAccount.objects.all()
@@ -134,22 +133,26 @@ class UserAccountViewSet(viewsets.ModelViewSet):
         if request.method == 'POST':
             form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
-            doc = form.save() 
-
-class UserAccountRudView(generics.RetrieveUpdateAPIView):
-    lookup_field = 'pk' #id #url(?P<pk>\d+)
-    serializer_class = UserAccountSerializer
-    permission_classes = [UpdateOwnProfile,IsOwnerOrReadOnly]
-    def get_queryset(self) :
-        return UserAccount.objects.all()
-    def get_serializer_context(self, *args, **kwargs):
-        return {"request":self.request}
-    def upload(request):
-        if request.method == 'POST':
-            form = DocumentForm(request.POST, request.FILES)
-        if form.is_valid():
-            doc = form.save()      
+            doc = form.save()     
             
 class UserLoginApiView(ObtainAuthToken):
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
-      
+
+class UserAccountAddressViewSet(viewsets.ModelViewSet):
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = UserAccountAddressSerializer
+    queryset = UserAccountAddress.objects.all()
+    def perform_create(self, serializer):
+        serializer.save(user_account=self.request.user)
+    """
+    def get_serializer_context(self, *args, **kwargs):
+        return {"request":self.request}
+    def pre_save(self, obj):
+        obj.owner = self.request.user
+    def post(self, request):
+        serializer = UserAccountAddressSerializer(data=request.data)
+        serializer.save(user_account = self.request.user)
+    """
+    def get_queryset(self):
+        user = self.request.user
+        return UserAccountAddress.objects.filter(user_account = user)

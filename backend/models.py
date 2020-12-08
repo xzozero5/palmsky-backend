@@ -144,21 +144,26 @@ class UserAccount(AbstractBaseUser,PermissionsMixin) :
     def get_short_name(self):   
         return self.email
 
-
-    """
-    def has_module_perms(self, app_label):
-      
-       return self.is_superuser
-    
-    def has_perm(self, perm, obj=None):
-      
-       return self.is_superuser
-    """
-
     def get_api_url(self,request = None):
         return api_reverse("api-backend:account-rud",kwargs={'pk':self.pk},request=request)
 
     def __str__(self):
         return self.email
 
-    
+class UserAccountAddress(models.Model):
+    user_account = models.ForeignKey('UserAccount',on_delete = models.CASCADE)
+    create_on = models.DateTimeField(auto_now_add=True)
+    addressName = models.TextField(null=True,blank=True)
+    reciverName =  models.CharField(max_length=100,null=True,blank=True)
+    street = models.CharField(max_length=100,null=True,blank=True)
+    subDistrict = models.CharField(max_length=100,null=True,blank=True)
+    district = models.CharField(max_length=100,null=True,blank=True)
+    province = models.CharField(max_length=100,null=True,blank=True)
+    zipcode = models.CharField(max_length=50,null=True,blank=True)
+    phone =  models.CharField(max_length=15,null=True,blank=True)
+
+    def __str__(self):
+        return self.addressName
+
+    def get_api_url(self,request = None):
+        return api_reverse("api-backend:account-address-rud",kwargs={'pk':self.pk},request=request)

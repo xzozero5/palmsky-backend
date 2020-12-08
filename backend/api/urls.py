@@ -14,6 +14,8 @@ urlpatterns = [
     url(r'^book/(?P<pk>\d+)/$',BookRudView.as_view(),name='Book-rud'),
     url(r'^account/(?P<pk>\d+)/$',UserAccountViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update','delete': 'destroy'}),name='account-rud'),
     url(r'^account/$',UserAccountViewSet.as_view({'get': 'list','post': 'create'}),name='account-list'),
+    url(r'^account/address/$',UserAccountAddressViewSet.as_view({'get': 'list','post': 'create'}),name='account-address'),
+    url(r'^account/address/(?P<pk>\d+)/$',UserAccountAddressViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update','delete': 'destroy'}),name='account-address-rud'),
     path('login/',UserLoginApiView.as_view()),
 ] 
 
