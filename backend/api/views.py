@@ -134,6 +134,17 @@ class UserAccountViewSet(viewsets.ModelViewSet):
             form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             doc = form.save()     
+
+
+class UserAccountRudViewSet(viewsets.ModelViewSet):
+    serializer_class = UserAccountUrlSerializer
+    queryset = UserAccount.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (UpdateOwnProfile,)
+
+    def get_queryset(self):
+        user = self.request.user
+        return UserAccount.objects.filter(email = user.email)
             
 class UserLoginApiView(ObtainAuthToken):
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
@@ -142,6 +153,7 @@ class UserAccountAddressViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     serializer_class = UserAccountAddressSerializer
     queryset = UserAccountAddress.objects.all()
+
     def perform_create(self, serializer):
         serializer.save(user_account=self.request.user)
     """

@@ -167,3 +167,13 @@ class UserAccountAddressSerializer(serializers.ModelSerializer):
         return objects.get_api_url(request=request)
 
 
+class UserAccountUrlSerializer(serializers.ModelSerializer):
+    url = serializers.SerializerMethodField(read_only=True)
+    class Meta:
+        model = UserAccount
+        fields = [
+            'url',
+        ]
+    def get_url(self,objects):
+        request = self.context.get("request")
+        return objects.get_api_url(request=request)

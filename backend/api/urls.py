@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^book/rank/$',BookListRankAPIView.as_view(),name='Book-list-rank'),
     url(r'^book/(?P<pk>\d+)/$',BookRudView.as_view(),name='Book-rud'),
     url(r'^account/(?P<pk>\d+)/$',UserAccountViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update','delete': 'destroy'}),name='account-rud'),
+    url(r'^account/profile/$',UserAccountRudViewSet.as_view({'get': 'list'}),name='account-url'),
     url(r'^account/$',UserAccountViewSet.as_view({'get': 'list','post': 'create'}),name='account-list'),
     url(r'^account/address/$',UserAccountAddressViewSet.as_view({'get': 'list','post': 'create'}),name='account-address'),
     url(r'^account/address/(?P<pk>\d+)/$',UserAccountAddressViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update','delete': 'destroy'}),name='account-address-rud'),
