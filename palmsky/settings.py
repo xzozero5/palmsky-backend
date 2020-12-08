@@ -50,8 +50,10 @@ CORS_ALLOW_HEADERS = (
         'origin',
         'authorization',
         'x-csrftoken',
+        'content-disposition', 
+        'accept-encoding',              
         'X-Access-Token'
-)
+)+ ('cache-control',)
 CORS_ALLOWED_ORIGIN = ['*']
 CORS_REPLACE_HTTPS_REFERER = True
 # Application definition
