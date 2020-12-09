@@ -145,6 +145,11 @@ class UserAccountRudViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         return UserAccount.objects.filter(email = user.email)
+    def update(self, request, *args, **kwargs):
+        serializer = self.serializer_class(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
             
 class UserLoginApiView(ObtainAuthToken):
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
