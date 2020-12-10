@@ -127,7 +127,7 @@ class UserAccountViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (UpdateOwnProfile,)
     filter_backends = (filters.SearchFilter,)
-    search_fields =  ('=email')
+    search_fields =  ('=email',)
 
     def upload(request):
         if request.method == 'POST':
